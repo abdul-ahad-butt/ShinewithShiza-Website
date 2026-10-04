@@ -2,6 +2,7 @@ name = "shinewithshiza-website"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+account_id = "3426d738ed134463fd121ff0e9b95648"
 
 [vars]
 ENVIRONMENT = "production"
