@@ -13,11 +13,11 @@ ADMIN_PASSWORD = "Admin@ShinewithShiza"
 FRONTEND_URL = "https://shinewithshiza-website.pages.dev"
 CORS_ORIGIN = "*"
 
-# Cloudflare D1 Database binding
+# Cloudflare D1 Database binding — matches dashboard exactly
 [[d1_databases]]
-binding = "DB"
-database_name = "shine_with_shiza_db"
-database_id = "your-d1-database-uuid-here"
+binding = "shinewithshiza-D1"
+database_name = "shinewithshiza-website"
+database_id = "10cab3ff-612e-4c36-a989-b6df6512f1ab"
 
 [observability]
 enabled = true

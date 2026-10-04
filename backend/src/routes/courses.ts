@@ -1,13 +1,14 @@
 import { Hono } from 'hono';
 import { DatabaseService } from '../db/index';
 import { generateCourseWhatsAppUrl } from '../services/whatsapp';
+import type { Bindings } from '../index';
 
-export const coursesRouter = new Hono<{ Bindings: { DB?: any; SALON_PHONE?: string } }>();
+export const coursesRouter = new Hono<{ Bindings: Bindings }>();
 
 // GET /api/course-inquiries - fetch all student applicants
 coursesRouter.get('/', async (c) => {
   try {
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const inquiries = await db.getCourseInquiries();
     return c.json({ success: true, data: inquiries });
   } catch (error: any) {
@@ -38,7 +39,7 @@ coursesRouter.post('/', async (c) => {
       salonPhone
     );
 
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const inquiry = await db.createCourseInquiry({
       student_name: studentName,
       phone,
@@ -63,7 +64,7 @@ coursesRouter.patch('/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const { status } = await c.req.json();
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const updated = await db.updateCourseInquiryStatus(id, status);
     if (!updated) {
       return c.json({ success: false, error: 'Inquiry not found' }, 404);

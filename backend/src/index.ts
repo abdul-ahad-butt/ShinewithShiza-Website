@@ -7,8 +7,8 @@ import { coursesRouter } from './routes/courses';
 import { dealsRouter } from './routes/deals';
 import { statsRouter } from './routes/stats';
 
-type Bindings = {
-  DB?: any;
+export type Bindings = {
+  'shinewithshiza-D1'?: D1Database;
   SALON_NAME?: string;
   SALON_PHONE?: string;
   SALON_LOCATION?: string;

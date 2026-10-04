@@ -1,14 +1,15 @@
 import { Hono } from 'hono';
 import { DatabaseService } from '../db/index';
 import { generateBookingWhatsAppUrl } from '../services/whatsapp';
+import type { Bindings } from '../index';
 
-export const bookingsRouter = new Hono<{ Bindings: { DB?: any; SALON_PHONE?: string } }>();
+export const bookingsRouter = new Hono<{ Bindings: Bindings }>();
 
 // GET /api/appointments - fetch all bookings (optional status filter)
 bookingsRouter.get('/', async (c) => {
   try {
     const status = c.req.query('status');
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const appointments = await db.getAppointments(status);
     return c.json({ success: true, data: appointments });
   } catch (error: any) {
@@ -41,7 +42,7 @@ bookingsRouter.post('/', async (c) => {
       salonPhone
     );
 
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const appointment = await db.createAppointment({
       client_name: clientName,
       phone,
@@ -72,7 +73,7 @@ bookingsRouter.patch('/:id', async (c) => {
     const body = await c.req.json();
     const { status, notes } = body;
 
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const updated = await db.updateAppointmentStatus(id, status, notes);
 
     if (!updated) {
@@ -89,7 +90,7 @@ bookingsRouter.patch('/:id', async (c) => {
 bookingsRouter.delete('/:id', async (c) => {
   try {
     const id = c.req.param('id');
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const deleted = await db.deleteAppointment(id);
     return c.json({ success: true, deleted });
   } catch (error: any) {

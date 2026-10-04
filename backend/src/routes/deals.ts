@@ -1,7 +1,8 @@
 import { Hono } from 'hono';
 import { DatabaseService } from '../db/index';
+import type { Bindings } from '../index';
 
-export const dealsRouter = new Hono<{ Bindings: { DB?: any } }>();
+export const dealsRouter = new Hono<{ Bindings: Bindings }>();
 
 // GET /api/deals - retrieve salon packages and course discounts
 dealsRouter.get('/', async (c) => {
@@ -10,7 +11,7 @@ dealsRouter.get('/', async (c) => {
     const activeOnly = c.req.query('active') === '1' || (!all && c.req.query('all') !== 'false' && c.req.query('active') !== '0');
     const section = c.req.query('section') || undefined;
 
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     // If explicitly requesting all deals (like admin does with ?all=true), activeOnly = false
     const deals = await db.getDeals(all ? false : activeOnly, section);
     return c.json({ success: true, data: deals });
@@ -23,7 +24,7 @@ dealsRouter.get('/', async (c) => {
 dealsRouter.get('/:id', async (c) => {
   try {
     const id = c.req.param('id');
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const deal = await db.getDealById(id);
     if (!deal) {
       return c.json({ success: false, error: 'Deal not found' }, 404);
@@ -44,7 +45,7 @@ dealsRouter.post('/', async (c) => {
       return c.json({ success: false, error: 'Title and description are required' }, 400);
     }
 
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const newDeal = await db.createDeal({
       title: String(title).trim(),
       description: String(description).trim(),
@@ -67,7 +68,7 @@ dealsRouter.patch('/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const body = await c.req.json();
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
 
     const updateData: any = {};
     if (body.title !== undefined) updateData.title = String(body.title).trim();
@@ -98,7 +99,7 @@ dealsRouter.patch('/:id/toggle', async (c) => {
   try {
     const id = c.req.param('id');
     const body = await c.req.json().catch(() => ({}));
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
 
     let nextActiveState: boolean;
     if (body.isActive !== undefined) {
@@ -125,7 +126,7 @@ dealsRouter.patch('/:id/toggle', async (c) => {
 dealsRouter.delete('/:id', async (c) => {
   try {
     const id = c.req.param('id');
-    const db = new DatabaseService(c.env?.DB);
+    const db = new DatabaseService(c.env?.['shinewithshiza-D1']);
     const deleted = await db.deleteDeal(id);
     if (!deleted) {
       return c.json({ success: false, error: 'Deal not found or could not be deleted' }, 404);
