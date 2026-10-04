@@ -1,0 +1,19 @@
+{
+  "name": "shine-with-shiza-monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "admin"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:admin": "npm run dev --workspace=admin",
+    "dev:backend": "npm run dev:local --workspace=backend",
+    "build": "npm run build --workspace=frontend && npm run build --workspace=admin && npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:admin": "npm run build --workspace=admin",
+    "build:backend": "npm run build --workspace=backend"
+  }
+}

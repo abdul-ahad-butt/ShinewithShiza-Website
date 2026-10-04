@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Rich Imperial Gold Gradients -->
+    <linearGradient id="goldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ECCF83" />
+      <stop offset="25%" stop-color="#FDF2C8" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="75%" stop-color="#AA7C11" />
+      <stop offset="100%" stop-color="#644B08" />
+    </linearGradient>
+
+    <linearGradient id="goldRadial" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF2CE" />
+      <stop offset="40%" stop-color="#D4AF37" />
+      <stop offset="85%" stop-color="#8E6913" />
+      <stop offset="100%" stop-color="#4E3906" />
+    </linearGradient>
+
+    <!-- Outer Gold Ring Glow Filter -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <radialGradient id="bgDarkRadial" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1B1A18" />
+      <stop offset="70%" stop-color="#0B0B0C" />
+      <stop offset="100%" stop-color="#050505" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background Obsidian Circle -->
+  <circle cx="250" cy="250" r="240" fill="url(#bgDarkRadial)" stroke="url(#goldSheen)" stroke-width="4" />
+  <circle cx="250" cy="250" r="230" fill="none" stroke="#D4AF37" stroke-width="1" stroke-opacity="0.35" stroke-dasharray="6,4" />
+
+  <!-- Outer Ornate Filigree Elements -->
+  <g stroke="url(#goldSheen)" fill="none" stroke-width="1.5" opacity="0.6">
+    <path d="M 250 25 C 240 38 230 45 220 45 M 250 25 C 260 38 270 45 280 45" />
+    <circle cx="250" cy="20" r="3" fill="#D4AF37" />
+    <circle cx="250" cy="480" r="3" fill="#D4AF37" />
+  </g>
+
+  <!-- Central Silhouette "S" - Woman Profile Monogram -->
+  <g transform="translate(145, 65) scale(1.05)" filter="url(#goldGlow)">
+    <!-- Base Glow Layer -->
+    <path d="M 100 20 
+             C 125 20, 145 35, 145 65 
+             C 145 92, 125 110, 105 125 
+             C 80 142, 60 160, 60 190 
+             C 60 225, 90 255, 135 255 
+             C 150 255, 168 250, 180 240
+             C 165 248, 145 250, 130 250
+             C 80 250, 50 215, 50 180
+             C 50 145, 75 125, 100 108
+             C 125 90, 135 75, 135 55
+             C 135 32, 118 25, 100 25
+             C 75 25, 55 42, 50 65
+             C 48 50, 68 20, 100 20 Z" 
+          fill="url(#goldSheen)" />
+
+    <!-- Woman Profile & Flowing Tresses forming the internal curves -->
+    <!-- Forehead, Delicate Nose, Lips & Chin Silhouette Profile -->
+    <path d="M 125 55
+             C 132 65, 135 75, 138 85
+             C 136 86, 134 88, 130 88
+             C 135 92, 138 95, 135 102
+             C 132 108, 125 112, 125 118
+             C 125 125, 135 132, 140 140
+             C 132 135, 120 128, 115 118
+             C 112 112, 116 102, 112 95
+             C 108 90, 105 85, 110 75
+             C 114 68, 120 60, 125 55 Z"
+          fill="url(#goldRadial)" opacity="0.95" />
+
+    <!-- Flowing Hair Waves Ribbon Cascading into the 'S' Monogram -->
+    <path d="M 98 25
+             C 118 26, 138 40, 140 68
+             C 142 90, 128 112, 110 130
+             C 88 152, 65 172, 68 205
+             C 70 230, 95 248, 128 248
+             C 145 248, 162 242, 172 232
+             C 158 238, 140 240, 125 240
+             C 85 240, 62 215, 60 185
+             C 58 155, 82 132, 102 115
+             C 122 98, 130 82, 128 62
+             C 125 42, 110 32, 98 25 Z"
+          fill="url(#goldSheen)" />
+
+    <!-- Elegant Eyelashes and Eye Accent -->
+    <path d="M 122 76 Q 128 78 132 82 M 123 79 Q 129 83 133 86" 
+          stroke="url(#goldSheen)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+    <!-- Sparkle Accents on Hair Crown -->
+    <path d="M 148 45 L 152 48 L 148 51 L 144 48 Z" fill="#FFF2CE" />
+    <path d="M 68 120 L 71 123 L 68 126 L 65 123 Z" fill="#FFF2CE" />
+    <path d="M 160 215 L 163 218 L 160 221 L 157 218 Z" fill="#FFF2CE" />
+  </g>
+
+  <!-- Typography: SHINE WITH SHIZA -->
+  <text x="250" y="380" 
+        text-anchor="middle" 
+        font-family="'Playfair Display', 'Cormorant Garamond', 'Georgia', serif" 
+        font-size="28" 
+        font-weight="700" 
+        letter-spacing="5.5" 
+        fill="url(#goldSheen)">
+    SHINE WITH SHIZA
+  </text>
+
+  <!-- Typography: BEAUTY SALON & ACADEMY -->
+  <text x="250" y="408" 
+        text-anchor="middle" 
+        font-family="'Plus Jakarta Sans', 'Inter', 'Montserrat', sans-serif" 
+        font-size="11.5" 
+        font-weight="600" 
+        letter-spacing="7" 
+        fill="#E5E0D8" 
+        opacity="0.9">
+    BEAUTY SALON &amp; ACADEMY
+  </text>
+
+  <!-- Location Tagline Underneath -->
+  <text x="250" y="428" 
+        text-anchor="middle" 
+        font-family="'Plus Jakarta Sans', 'Inter', sans-serif" 
+        font-size="8.5" 
+        font-weight="500" 
+        letter-spacing="3.5" 
+        fill="#AA7C11">
+    MODEL TOWN LINK RD • LAHORE
+  </text>
+
+  <!-- Ornate Decorative Divider Underneath Text -->
+  <g stroke="url(#goldSheen)" stroke-width="1" opacity="0.8">
+    <line x1="140" y1="440" x2="225" y2="440" />
+    <polygon points="250,437 253,440 250,443 247,440" fill="#D4AF37" />
+    <line x1="275" y1="440" x2="360" y2="440" />
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+name = "shine-with-shiza-backend"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+
+[vars]
+SALON_NAME = "Shine With Shiza"
+SALON_PHONE = "923374262774"
+SALON_LOCATION = "Baby World Basement, Model Town Link Rd, Opp. Amanah Mall, near Jalal Sons, Lahore"
+ADMIN_EMAIL = "admin@shinewithshiza.com"
+ADMIN_PASSWORD = "Admin@ShinewithShiza"
+CORS_ORIGIN = "*"
+
+# Cloudflare D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "shine_with_shiza_db"
+database_id = "your-d1-database-uuid-here"
+
+[observability]
+enabled = true

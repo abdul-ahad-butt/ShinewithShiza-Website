@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    background-color: #09090B;
+    color: #FAF6F0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #FFF2CE 0%, #ECCF83 25%, #D4AF37 50%, #B89228 75%, #ECCF83 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #ECCF83 0%, #D4AF37 50%, #A87D17 100%);
+    color: #0A0A0C;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+
+  .btn-gold:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+  }
+
+  .luxury-card {
+    background: linear-gradient(180deg, rgba(24, 24, 29, 0.8) 0%, rgba(14, 14, 17, 0.9) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+  }
+}
