@@ -276,7 +276,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             {/* Name & Phone Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="block text-xs font-medium text-champagne-300 mb-1 flex items-center gap-1">
+                <label className="flex items-center gap-1 text-xs font-medium text-champagne-300 mb-1">
                   <User className="w-3.5 h-3.5 text-gold-400" />
                   <span>Full Name</span>
                 </label>
@@ -291,7 +291,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-champagne-300 mb-1 flex items-center gap-1">
+                <label className="flex items-center gap-1 text-xs font-medium text-champagne-300 mb-1">
                   <Phone className="w-3.5 h-3.5 text-gold-400" />
                   <span>WhatsApp Phone</span>
                 </label>
@@ -310,7 +310,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             {!isAcademyInquiry ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-medium text-champagne-300 mb-1 flex items-center gap-1">
+                  <label className="flex items-center gap-1 text-xs font-medium text-champagne-300 mb-1">
                     <Calendar className="w-3.5 h-3.5 text-gold-400" />
                     <span>Preferred Date</span>
                   </label>
@@ -324,7 +324,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-champagne-300 mb-1 flex items-center gap-1">
+                  <label className="flex items-center gap-1 text-xs font-medium text-champagne-300 mb-1">
                     <Clock className="w-3.5 h-3.5 text-gold-400" />
                     <span>Preferred Time Slot</span>
                   </label>
@@ -366,7 +366,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
             {/* Special Instructions or Wedding Details */}
             <div>
-              <label className="block text-xs font-medium text-champagne-300 mb-1 flex items-center gap-1">
+              <label className="flex items-center gap-1 text-xs font-medium text-champagne-300 mb-1">
                 <FileText className="w-3.5 h-3.5 text-gold-400" />
                 <span>Special Requests / Outfit Color / Preferred Artist</span>
               </label>
