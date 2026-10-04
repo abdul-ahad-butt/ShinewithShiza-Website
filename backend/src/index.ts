@@ -23,13 +23,23 @@ const app = new Hono<{ Bindings: Bindings }>();
 // Logger Middleware
 app.use('*', logger());
 
-// Robust CORS Middleware
+// Enable CORS for Cloudflare Pages, preview domains, and local testing
 app.use('*', cors({
   origin: (origin) => {
-    // Allow localhost, cloudflare preview domains, or any configured origin
-    return origin || '*';
+    if (!origin) return '*';
+    if (
+      origin.includes('shinewithshiza-website.pages.dev') ||
+      origin.includes('pages.dev') ||
+      origin.includes('workers.dev') ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      origin.includes('shinewithshiza')
+    ) {
+      return origin;
+    }
+    return 'https://shinewithshiza-website.pages.dev';
   },
-  allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'X-Admin-PIN'],
   exposeHeaders: ['Content-Length'],
   maxAge: 86400,
@@ -60,30 +70,24 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-// Root & Health Check
+// Root Endpoint: API Information & Health Check
 app.get('/', (c) => {
   return c.json({
-    brand: 'Shine with Shiza',
-    subtitle: 'Luxury Beauty Salon & Academy API',
-    location: 'Model Town Link Road, Opposite Amanah Mall, Beside Jalal Sons, Lahore',
     status: 'online',
+    service: 'Shine with Shiza Salon & Academy Backend API',
     version: '1.0.0',
-    documentation: {
-      endpoints: [
-        'POST /api/appointments - Book salon slot (WhatsApp integrated)',
-        'GET /api/appointments - List bookings (Admin)',
-        'POST /api/course-inquiries - Apply for Beautician Academy',
-        'GET /api/course-inquiries - List student inquiries (Admin)',
-        'GET /api/deals - Active seasonal discounts',
-        'GET /api/stats - Live salon KPIs & metrics'
-      ]
+    endpoints: {
+      health: '/health',
+      deals: '/api/deals',
+      bookings: '/api/bookings',
+      courses: '/api/courses',
+      admin: '/api/admin/*'
     }
   });
 });
 
-app.get('/api/health', (c) => {
-  return c.json({ status: 'healthy', timestamp: new Date().toISOString() });
-});
+app.get('/health', (c) => c.json({ ok: true, timestamp: new Date().toISOString() }));
+app.get('/api/health', (c) => c.json({ ok: true, timestamp: new Date().toISOString() }));
 
 // Attach Modular Routers
 app.route('/api/admin', authRouter);

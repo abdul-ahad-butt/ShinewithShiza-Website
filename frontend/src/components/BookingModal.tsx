@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, User, Phone, FileText, Sparkles, MessageCircle, CheckCircle, Send, Loader2 } from 'lucide-react';
 import { SERVICES_CATALOG, SALON_INFO, ServiceItem } from '../data/salonData';
+import { API_BASE_URL } from '../config/api';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -141,19 +142,28 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           };
 
       let response: Response;
+      const targetUrl = `${API_BASE_URL}${path}`;
       try {
-        response = await fetch(path, {
+        response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
       } catch (proxyErr) {
-        // Direct backend fallback
-        response = await fetch(`http://localhost:8787${path}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
+        // Fallback to relative endpoint or local dev port
+        try {
+          response = await fetch(path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+        } catch (relativeErr) {
+          response = await fetch(`http://localhost:8787${path}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+        }
       }
 
       if (response.ok) {

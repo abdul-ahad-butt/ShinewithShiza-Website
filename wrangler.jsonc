@@ -1,8 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "shinewithshiza-website",
-  "compatibility_date": "2024-04-05",
-  "assets": {
-    "directory": "./frontend/dist"
+  "main": "backend/src/index.ts",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "ENVIRONMENT": "production",
+    "SALON_NAME": "Shine With Shiza",
+    "SALON_PHONE": "923374262774",
+    "SALON_LOCATION": "Baby World Basement, Model Town Link Rd, Opp. Amanah Mall, near Jalal Sons, Lahore",
+    "ADMIN_EMAIL": "admin@shinewithshiza.com",
+    "ADMIN_PASSWORD": "Admin@ShinewithShiza",
+    "FRONTEND_URL": "https://shinewithshiza-website.pages.dev",
+    "CORS_ORIGIN": "*"
   }
 }

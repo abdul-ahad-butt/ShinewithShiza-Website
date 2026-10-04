@@ -15,7 +15,10 @@ export interface Deal {
   badge_text?: string;
 }
 
-const PRIMARY_API = '/api/deals?active=1';
+import { API_BASE_URL } from '../config/api';
+
+const PRIMARY_API = `${API_BASE_URL}/api/deals?active=1`;
+const RELATIVE_API = '/api/deals?active=1';
 const DIRECT_API = 'http://localhost:8787/api/deals?active=1';
 
 // Luxury default fallback in case offline
@@ -50,7 +53,7 @@ const DEFAULT_FALLBACK_DEALS: Deal[] = [
 
 export const DealsClientAPI = {
   async getActiveDeals(): Promise<Deal[]> {
-    const endpoints = [PRIMARY_API, DIRECT_API];
+    const endpoints = [PRIMARY_API, RELATIVE_API, DIRECT_API];
 
     for (const url of endpoints) {
       try {
