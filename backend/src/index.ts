@@ -23,21 +23,26 @@ const app = new Hono<{ Bindings: Bindings }>();
 // Logger Middleware
 app.use('*', logger());
 
-// Enable CORS for Cloudflare Pages, preview domains, and local testing
+// Enable CORS for Cloudflare Pages, Admin Portal, preview domains, and local testing
 app.use('*', cors({
   origin: (origin) => {
-    if (!origin) return '*';
+    const allowed = [
+      'https://shinewithshiza-website.pages.dev',
+      'https://shinewithshiza-website-admin.pages.dev',
+      'http://localhost:5173',
+      'http://localhost:5174'
+    ];
+    if (!origin || allowed.includes(origin)) return origin || '*';
     if (
-      origin.includes('shinewithshiza-website.pages.dev') ||
-      origin.includes('pages.dev') ||
-      origin.includes('workers.dev') ||
+      origin.endsWith('.pages.dev') ||
+      origin.endsWith('.workers.dev') ||
       origin.includes('localhost') ||
       origin.includes('127.0.0.1') ||
       origin.includes('shinewithshiza')
     ) {
       return origin;
     }
-    return 'https://shinewithshiza-website.pages.dev';
+    return allowed[0];
   },
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'X-Admin-PIN'],
@@ -45,6 +50,16 @@ app.use('*', cors({
   maxAge: 86400,
   credentials: true,
 }));
+
+// Normalize duplicate slashes in incoming request URLs (e.g. //api/deals -> /api/deals)
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.pathname.includes('//')) {
+    const cleanPath = url.pathname.replace(/\/+/g, '/');
+    return c.redirect(cleanPath + url.search, 307);
+  }
+  await next();
+});
 
 // Simple In-Memory Rate Limiting Tracker
 const requestIpMap = new Map<string, { count: number; timestamp: number }>();

@@ -40,8 +40,9 @@ export interface Deal {
   badge_text?: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://shinewithshiza-website.shinewithshiza87.workers.dev' : '');
-const PRIMARY_API = API_BASE_URL ? `${API_BASE_URL}/api` : '/api';
+import { API_BASE_URL } from '../config/api';
+
+const PRIMARY_API = `${API_BASE_URL}/api`;
 const DIRECT_API = 'http://localhost:8787/api';
 
 const getHeaders = () => {

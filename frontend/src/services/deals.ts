@@ -15,9 +15,9 @@ export interface Deal {
   badge_text?: string;
 }
 
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, buildApiUrl } from '../config/api';
 
-const PRIMARY_API = `${API_BASE_URL}/api/deals?active=1`;
+const PRIMARY_API = buildApiUrl('/api/deals?active=1');
 const RELATIVE_API = '/api/deals?active=1';
 const DIRECT_API = 'http://localhost:8787/api/deals?active=1';
 

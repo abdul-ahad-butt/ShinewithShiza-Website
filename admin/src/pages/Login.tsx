@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, User, Eye, EyeOff, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { AuthUtils } from '../utils/auth';
+import { endpoints } from '../config/api';
 
 interface LoginProps {
   onAuthenticated: () => void;
@@ -29,18 +30,33 @@ export const Login: React.FC<LoginProps> = ({ onAuthenticated }) => {
 
     try {
       let response: Response;
+      const payload = {
+        email: cleanUsername,
+        username: cleanUsername,
+        password: cleanPassword
+      };
+
       try {
-        response = await fetch('/api/admin/login', {
+        response = await fetch(endpoints.login, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
+          body: JSON.stringify(payload)
         });
       } catch (proxyErr) {
-        response = await fetch('http://localhost:8787/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
-        });
+        // Fallback for local proxy or offline dev server
+        try {
+          response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (innerErr) {
+          response = await fetch('http://localhost:8787/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
       }
 
       if (response.ok) {
@@ -59,7 +75,11 @@ export const Login: React.FC<LoginProps> = ({ onAuthenticated }) => {
 
       // If backend returned error response or non-200
       const errData = await response.json().catch(() => ({}));
-      setErrorMessage(errData.error || 'Invalid username or password. Please check your credentials.');
+      const errorMsg =
+        errData.message ||
+        errData.error ||
+        `Server error (${response.status}). Please check backend connection.`;
+      setErrorMessage(errorMsg);
     } catch (networkError) {
       // Local strict fallback validation in case network fails completely
       const isUserMatch = cleanUsername.toLowerCase() === 'admin' || cleanUsername.toLowerCase() === 'admin@shinewithshiza.com';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, User, Phone, FileText, Sparkles, MessageCircle, CheckCircle, Send, Loader2 } from 'lucide-react';
 import { SERVICES_CATALOG, SALON_INFO, ServiceItem } from '../data/salonData';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, buildApiUrl } from '../config/api';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -142,7 +142,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           };
 
       let response: Response;
-      const targetUrl = `${API_BASE_URL}${path}`;
+      const targetUrl = buildApiUrl(path);
       try {
         response = await fetch(targetUrl, {
           method: 'POST',
