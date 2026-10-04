@@ -27,13 +27,17 @@ export interface CourseInquiry {
 
 export interface Deal {
   id: string;
+  badge: string;
+  promo_code?: string;
   title: string;
-  discount_pct: number;
+  description: string;
+  valid_until?: string;
+  is_active: number;
+  target_section?: 'all' | 'banner' | 'hero' | 'services' | string;
+  created_at?: string;
+  discount_pct?: number;
   code?: string;
   badge_text?: string;
-  description?: string;
-  is_active: number;
-  valid_until?: string;
 }
 
 const PRIMARY_API = '/api';
@@ -54,33 +58,45 @@ let localInquiries: CourseInquiry[] = [];
 let localDeals: Deal[] = [
   {
     id: 'deal-1',
-    title: 'Basic to Advance Beautician Masterclass (50% Off)',
-    discount_pct: 50,
+    badge: '50% OFF LIMITED SEATS',
+    badge_text: '50% OFF LIMITED SEATS',
+    promo_code: 'ACADEMY50',
     code: 'ACADEMY50',
-    badge_text: '50% OFF LIMITED TIME',
-    description: 'Headline promotional banner active on top announcement bar and academy section.',
+    title: 'Basic to Advance Beautician Masterclass',
+    description: 'Comprehensive professional certification covering bridal hair, HD contouring, hygiene, and live client handling.',
     is_active: 1,
-    valid_until: '2026-12-31'
+    valid_until: '2026-12-31',
+    target_section: 'all',
+    discount_pct: 50,
+    created_at: new Date().toISOString()
   },
   {
     id: 'deal-2',
-    title: 'Royal Baroque Bridal Trio Bundle',
-    discount_pct: 30,
+    badge: 'WEDDING SEASON SPECIAL',
+    badge_text: 'WEDDING SEASON SPECIAL',
+    promo_code: 'BAROQUE30',
     code: 'BAROQUE30',
-    badge_text: 'WEDDING SPECIAL',
-    description: 'Barat, Walima & Nikkah combined package with free HydraFacial prep.',
+    title: 'Royal Baroque Bridal Trio Bundle',
+    description: 'Signature Barat, Walima, and Nikkah glam package including free pre-bridal HydraFacial and hair spa treatment.',
     is_active: 1,
-    valid_until: '2026-11-30'
+    valid_until: '2026-11-30',
+    target_section: 'services',
+    discount_pct: 30,
+    created_at: new Date().toISOString()
   },
   {
     id: 'deal-3',
-    title: 'HydraFacial Glow & Keratin Combo',
-    discount_pct: 25,
-    code: 'GLOWSPA25',
+    badge: 'WEEKDAY EXCLUSIVE',
     badge_text: 'WEEKDAY EXCLUSIVE',
-    description: 'Rejuvenation package for working women.',
-    is_active: 0,
-    valid_until: '2026-10-31'
+    promo_code: 'GLOWSPA25',
+    code: 'GLOWSPA25',
+    title: 'HydraFacial Glow & Keratin Polish Combo',
+    description: 'Ultimate skin rejuvenation HydraFacial with deep scalp keratin nourishing treatment.',
+    is_active: 1,
+    valid_until: '2026-10-31',
+    target_section: 'services',
+    discount_pct: 25,
+    created_at: new Date().toISOString()
   }
 ];
 
@@ -291,6 +307,68 @@ export const AdminAPI = {
     return [...localDeals];
   },
 
+  // Create New Deal
+  async createDeal(dealData: Omit<Deal, 'id' | 'created_at'>): Promise<Deal> {
+    const endpoints = [
+      `${PRIMARY_API}/deals`,
+      `${DIRECT_API}/deals`
+    ];
+
+    for (const url of endpoints) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: getHeaders(),
+          body: JSON.stringify(dealData)
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) {
+            localDeals.unshift(json.data);
+            return json.data;
+          }
+        }
+      } catch (err) {}
+    }
+
+    const fallbackDeal: Deal = {
+      ...dealData,
+      id: `deal-${Date.now()}`,
+      created_at: new Date().toISOString()
+    };
+    localDeals.unshift(fallbackDeal);
+    return fallbackDeal;
+  },
+
+  // Update Deal Details
+  async updateDeal(id: string, dealData: Partial<Omit<Deal, 'id' | 'created_at'>>): Promise<Deal | null> {
+    const endpoints = [
+      `${PRIMARY_API}/deals/${id}`,
+      `${DIRECT_API}/deals/${id}`
+    ];
+
+    for (const url of endpoints) {
+      try {
+        const res = await fetch(url, {
+          method: 'PATCH',
+          headers: getHeaders(),
+          body: JSON.stringify(dealData)
+        });
+        if (res.ok) {
+          const json = await res.json();
+          return json.data;
+        }
+      } catch (err) {}
+    }
+
+    const found = localDeals.find(d => d.id === id);
+    if (found) {
+      Object.assign(found, dealData);
+      return { ...found };
+    }
+    return null;
+  },
+
   // Toggle Deal
   async toggleDeal(id: string, isActive: boolean): Promise<Deal | null> {
     const endpoints = [
@@ -318,5 +396,29 @@ export const AdminAPI = {
       return { ...found };
     }
     return null;
+  },
+
+  // Delete Deal
+  async deleteDeal(id: string): Promise<boolean> {
+    const endpoints = [
+      `${PRIMARY_API}/deals/${id}`,
+      `${DIRECT_API}/deals/${id}`
+    ];
+
+    for (const url of endpoints) {
+      try {
+        const res = await fetch(url, {
+          method: 'DELETE',
+          headers: getHeaders()
+        });
+        if (res.ok) {
+          localDeals = localDeals.filter(d => d.id !== id);
+          return true;
+        }
+      } catch (err) {}
+    }
+
+    localDeals = localDeals.filter(d => d.id !== id);
+    return true;
   }
 };

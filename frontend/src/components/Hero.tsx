@@ -1,13 +1,18 @@
 import React from 'react';
-import { Calendar, GraduationCap, MapPin, Star, Sparkles, ShieldCheck, Heart } from 'lucide-react';
+import { Calendar, GraduationCap, MapPin, Star, Sparkles, ShieldCheck, Heart, Tag } from 'lucide-react';
 import { SALON_INFO } from '../data/salonData';
+import { Deal } from '../services/deals';
 
 interface HeroProps {
   onOpenBooking: () => void;
   onExploreAcademy: () => void;
+  activeDeal?: Deal;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreAcademy }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreAcademy, activeDeal }) => {
+  const dealBadge = activeDeal ? (activeDeal.badge || activeDeal.badge_text) : '50% OFF • Limited Slots';
+  const dealTitle = activeDeal ? activeDeal.title : '2-Month Beautician Masterclass';
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-12 lg:py-20">
       
@@ -144,17 +149,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreAcademy }) =
 
             </div>
 
-            {/* Floating Pill 1: 50% Course Discount */}
-            <div className="absolute -top-4 -left-4 sm:left-0 p-3 sm:p-3.5 rounded-2xl bg-salon-900/90 backdrop-blur-md border border-gold-500/40 shadow-xl flex items-center gap-3 animate-float">
+            {/* Floating Pill 1: Dynamic Deal / Course Discount */}
+            <div className="absolute -top-4 -left-4 sm:left-0 p-3 sm:p-3.5 rounded-2xl bg-salon-900/90 backdrop-blur-md border border-gold-500/40 shadow-xl flex items-center gap-3 animate-float max-w-[280px] sm:max-w-xs">
               <div className="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center shrink-0">
                 <GraduationCap className="w-5 h-5 text-gold-300" />
               </div>
-              <div className="text-left">
-                <p className="text-[10px] font-bold tracking-wider uppercase text-gold-400">
-                  🎓 2-Month Beautician Masterclass
+              <div className="text-left min-w-0">
+                <p className="text-[10px] font-bold tracking-wider uppercase text-gold-400 truncate">
+                  ✨ {dealTitle}
                 </p>
-                <p className="text-xs sm:text-sm font-bold text-champagne-100">
-                  50% OFF • Limited Slots
+                <p className="text-xs sm:text-sm font-bold text-champagne-100 truncate">
+                  {dealBadge}
                 </p>
               </div>
             </div>

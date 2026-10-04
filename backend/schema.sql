@@ -27,24 +27,28 @@ CREATE TABLE IF NOT EXISTS course_inquiries (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS active_deals;
-CREATE TABLE IF NOT EXISTS active_deals (
+DROP TABLE IF EXISTS deals;
+CREATE TABLE IF NOT EXISTS deals (
   id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  discount_pct INTEGER NOT NULL DEFAULT 50,
-  code TEXT,
-  badge_text TEXT,
-  description TEXT,
-  is_active INTEGER DEFAULT 1,
-  valid_until TEXT,
+  badge TEXT NOT NULL,              -- e.g. "50% OFF LIMITED SEATS", "WEDDING SPECIAL"
+  promo_code TEXT,                  -- e.g. "ACADEMY50", "BAROQUE30"
+  title TEXT NOT NULL,              -- e.g. "Basic to Advance Beautician Masterclass"
+  description TEXT NOT NULL,
+  valid_until TEXT,                 -- e.g. "2026-12-31"
+  is_active INTEGER DEFAULT 1,      -- 1 = Active, 0 = Inactive
+  target_section TEXT DEFAULT 'all', -- 'banner', 'hero', 'services', 'all'
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Backward compatibility view
+DROP VIEW IF EXISTS active_deals;
+CREATE VIEW IF NOT EXISTS active_deals AS SELECT id, title, badge AS badge_text, promo_code AS code, description, is_active, valid_until, created_at FROM deals;
+
 -- Seed Initial Promotional Deals
-INSERT INTO active_deals (id, title, discount_pct, code, badge_text, description, is_active, valid_until) VALUES
-('deal-1', 'Basic to Advance Beautician Masterclass', 50, 'ACADEMY50', '50% OFF LIMITED SLOTS', 'Comprehensive professional certification covering bridal hair, HD contouring, hygiene, and live client handling.', 1, '2026-12-31'),
-('deal-2', 'Royal Baroque Bridal Trio Bundle', 30, 'BAROQUE30', 'WEDDING SEASON SPECIAL', 'Signature Barat, Walima, and Nikkah glam package including free pre-bridal HydraFacial and hair spa treatment.', 1, '2026-11-30'),
-('deal-3', 'HydraFacial Glow & Keratin Polish Combo', 25, 'GLOWSPA25', 'WEEKDAY EXCLUSIVE', 'Ultimate skin rejuvenation HydraFacial with deep scalp keratin nourishing treatment.', 1, '2026-10-31');
+INSERT INTO deals (id, badge, promo_code, title, description, valid_until, is_active, target_section) VALUES
+('deal-1', '50% OFF LIMITED SEATS', 'ACADEMY50', 'Basic to Advance Beautician Masterclass', 'Comprehensive professional certification covering bridal hair, HD contouring, hygiene, and live client handling.', '2026-12-31', 1, 'all'),
+('deal-2', 'WEDDING SEASON SPECIAL', 'BAROQUE30', 'Royal Baroque Bridal Trio Bundle', 'Signature Barat, Walima, and Nikkah glam package including free pre-bridal HydraFacial and hair spa treatment.', '2026-11-30', 1, 'services'),
+('deal-3', 'WEEKDAY EXCLUSIVE', 'GLOWSPA25', 'HydraFacial Glow & Keratin Polish Combo', 'Ultimate skin rejuvenation HydraFacial with deep scalp keratin nourishing treatment.', '2026-10-31', 1, 'services');
 
 -- Seed Sample Bookings for Admin demonstration
 INSERT INTO appointments (id, client_name, phone, service, category, date, time, status, notes) VALUES
