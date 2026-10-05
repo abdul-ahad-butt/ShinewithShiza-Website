@@ -2,6 +2,9 @@ const rawUrl =
   import.meta.env.VITE_API_URL ||
   'https://shinewithshiza-website.shinewithshiza87.workers.dev';
 
+export const CLIENT_WEBSITE_URL =
+  import.meta.env.VITE_CLIENT_URL || 'https://shinewithshiza-website.pages.dev';
+
 // Strip trailing slashes to prevent double slashes
 export const API_BASE_URL = (rawUrl || '').trim().replace(/\/+$/, '');
 

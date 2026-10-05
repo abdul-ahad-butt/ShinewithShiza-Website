@@ -1,5 +1,6 @@
 import React from 'react';
 import { LayoutDashboard, CalendarDays, GraduationCap, Tag, PlusCircle, LogOut, ExternalLink, MapPin, X } from 'lucide-react';
+import { CLIENT_WEBSITE_URL } from '../config/api';
 
 interface SidebarProps {
   activeTab: 'dashboard' | 'bookings' | 'courses' | 'deals';
@@ -139,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* View Live Client Site */}
           <a
-            href="http://localhost:5173"
+            href={CLIENT_WEBSITE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-between text-xs text-champagne-300/80 hover:text-gold-300 py-1.5 px-2 transition-colors"
